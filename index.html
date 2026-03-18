@@ -109,6 +109,7 @@ nav {
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
+  contain: layout style;
 }
 
 .hero-badge {
@@ -158,6 +159,17 @@ nav {
 .hero-headline .accent-word {
   color: var(--accent);
   position: relative;
+}
+
+.hero-typed-line {
+  display: block;
+  color: var(--accent);
+  min-height: 1.1em;
+  will-change: contents;
+}
+
+#typed {
+  display: inline;
 }
 
 .hero-sub {
@@ -678,6 +690,14 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   .contact-grid { grid-template-columns: 1fr; }
   .section { padding: 4rem 1.25rem; }
   footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .exp-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .nav-hamburger { display: flex; }
+  .nav-cta { display: none; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-actions a { justify-content: center; }
+  .skill-bubble.sb-lg { font-size: 0.85rem; padding: 0.65rem 1.1rem; }
+  .tl-item { padding-left: 1.75rem; }
 }
 
 /* ── Cursor blink ── */
@@ -719,6 +739,30 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
+
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+.exp-grid { display:grid; grid-template-columns:1fr 2fr; gap:4rem; }
+
+.nav-hamburger {
+  display:none; flex-direction:column; gap:5px; cursor:pointer;
+  background:none; border:none; padding:4px;
+}
+.nav-hamburger span { display:block; width:22px; height:2px; background:var(--text); border-radius:2px; transition:all 0.3s; }
+.mobile-menu {
+  display:none; position:fixed; top:60px; left:0; right:0;
+  background:rgba(8,8,8,0.97); backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border); padding:1.5rem 1.25rem;
+  z-index:99; flex-direction:column;
+}
+.mobile-menu.open { display:flex; }
+.mobile-menu a {
+  display:block; padding:0.85rem 0; font-size:1rem; font-weight:500;
+  color:var(--muted); text-decoration:none;
+  border-bottom:1px solid var(--border); transition:color 0.2s;
+}
+.mobile-menu a:last-child { border-bottom:none; }
+.mobile-menu a:hover { color:var(--text); }
+
 </style>
 </head>
 <body>
@@ -734,7 +778,18 @@ footer p { font-size: 0.78rem; color: var(--muted); }
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="mailto:arpitshankar2@gmail.com" class="nav-cta">Let's Talk</a>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#work" onclick="closeMenu()">Work</a>
+  <a href="#experience" onclick="closeMenu()">Experience</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="mailto:arpitshankar2@gmail.com" onclick="closeMenu()" style="color:var(--accent);margin-top:0.5rem;border-bottom:none;">Let's Talk &#8594;</a>
+</div>
 
 <!-- ── Hero ── -->
 <section id="home">
@@ -743,7 +798,10 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 
     <h1 class="hero-headline fade-up fade-up-1">
       Product<br>
-      <span class="line2">Manager<span class="accent-word" id="typed-container"><span id="typed"></span><span class="cursor"></span></span></span>
+      <span class="line2">Manager</span>
+      <span class="hero-typed-line">
+        <span id="typed"></span><span class="cursor"></span>
+      </span>
     </h1>
 
     <p class="hero-sub fade-up fade-up-2">
@@ -810,7 +868,7 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 <section id="about">
   <div class="section">
     <div class="section-tag">About</div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start;">
+    <div class="about-grid">
       <div>
         <h2 class="section-title" style="margin-bottom:1.5rem;">I build products that<br><em style="font-style:italic;color:var(--accent)">actually ship.</em></h2>
         <p style="font-size:0.95rem;color:var(--muted);line-height:1.85;font-weight:300;margin-bottom:1.25rem;">
@@ -938,7 +996,7 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 <!-- ── Experience ── -->
 <section id="experience">
   <div class="section">
-    <div style="display:grid;grid-template-columns:1fr 2fr;gap:4rem;">
+    <div class="exp-grid">
       <div>
         <div class="section-tag">Experience</div>
         <h2 class="section-title" style="font-size:2rem;">Career<br>timeline</h2>
@@ -1138,25 +1196,53 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 </footer>
 
 <script>
-// Typed effect
+// Typed effect — contained to prevent layout reflow
 const words = ['& Logistics.', '& AI Products.', '& Supply Chain.', '& SaaS.'];
-let wi = 0, ci = 0, deleting = false;
+let wi = 0, ci = 0, deleting = false, paused = false;
 const el = document.getElementById('typed');
+const typedLine = el.closest('.hero-typed-line') || el.parentElement;
+
+// Pre-measure the widest word and lock the container width
+// This is the key fix — width never changes, so no reflow
+function lockWidth() {
+  const tmp = document.createElement('span');
+  tmp.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-family:Syne,sans-serif;font-weight:800;font-size:inherit;letter-spacing:-0.03em;';
+  document.body.appendChild(tmp);
+  let maxW = 0;
+  words.forEach(w => { tmp.textContent = w; maxW = Math.max(maxW, tmp.offsetWidth); });
+  document.body.removeChild(tmp);
+  // Set min-width on the typed line so layout never shifts
+  typedLine.style.minWidth = maxW + 'px';
+}
 
 function type() {
+  if (paused) return;
   const word = words[wi];
   if (!deleting) {
     el.textContent = word.slice(0, ci + 1);
     ci++;
-    if (ci === word.length) { deleting = true; setTimeout(type, 1800); return; }
+    if (ci === word.length) {
+      deleting = true;
+      setTimeout(type, 2000);
+      return;
+    }
   } else {
     el.textContent = word.slice(0, ci - 1);
     ci--;
-    if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; }
+    if (ci === 0) {
+      deleting = false;
+      wi = (wi + 1) % words.length;
+    }
   }
-  setTimeout(type, deleting ? 40 : 70);
+  setTimeout(type, deleting ? 35 : 65);
 }
-setTimeout(type, 1000);
+
+// Run after fonts are loaded to get accurate measurements
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => { lockWidth(); setTimeout(type, 800); });
+} else {
+  setTimeout(() => { lockWidth(); setTimeout(type, 800); }, 500);
+}
 
 // Scroll reveal
 const observer = new IntersectionObserver((entries) => {
@@ -1178,6 +1264,19 @@ document.querySelectorAll('.work-card, .tl-item, .skill-group, .cert-row, .conta
 // Nav shrink on scroll
 window.addEventListener('scroll', () => {
   const nav = document.getElementById('navbar');
+});
+
+// Hamburger menu
+function toggleMenu() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('nav') && !e.target.closest('.mobile-menu')) {
+    document.getElementById('mobile-menu').classList.remove('open');
+  }
 });
 
 // Skills tab switcher
