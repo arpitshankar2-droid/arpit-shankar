@@ -144,12 +144,11 @@ nav {
 }
 
 .hero-headline {
-  font-size: clamp(3.5rem, 8vw, 7.5rem);
+  font-size: clamp(3rem, 7vw, 6.5rem); 
   line-height: 0.95;
   letter-spacing: -0.03em;
   margin-bottom: 2rem;
   font-weight: 800;
-  word-break: break-word;
 }
 
 .hero-headline .line2 {
@@ -163,11 +162,26 @@ nav {
   position: relative;
 }
 
+/* SIZER TRICK 2.0: The Grid Stack */
 .hero-typed-line {
-  display: block;
+  display: grid; 
   color: var(--accent);
-  min-height: 1.1em;
-  will-change: contents;
+}
+
+.sizer-grid, .typing-layer {
+  grid-area: 1 / 1; /* Stacks both perfectly on top of each other */
+}
+
+.sizer-grid {
+  display: grid;
+}
+
+.sizer-grid span {
+  grid-area: 1 / 1; /* Stacks all invisible words together */
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+  word-break: break-word;
 }
 
 #typed {
@@ -724,7 +738,7 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   to   { transform: translateX(-50%); }
 }
 
-/* ── Base Desktop Grids (Moved up!) ── */
+/* ── Base Desktop Grids ── */
 .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
 .exp-grid { display:grid; grid-template-columns:1fr 2fr; gap:4rem; }
 
@@ -749,12 +763,14 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 .mobile-menu a:hover { color:var(--text); }
 
 
-/* ── Mobile Queries (Must always be last!) ── */
+/* ── Mobile Queries ── */
 @media (max-width: 768px) {
   nav { padding: 1rem 1.25rem; }
   .nav-links { display: none; }
   .hero { padding: 7rem 1.25rem 3rem; }
-  .hero-headline { font-size: clamp(2.8rem, 12vw, 4.5rem); word-break: break-word; }
+  
+  .hero-headline { font-size: clamp(2.5rem, 11vw, 4rem); }
+  
   .hero-badge { white-space: normal; line-height: 1.4; }
   .stats-bar { grid-template-columns: repeat(2, 1fr); }
   .stat { border-bottom: 1px solid var(--border); }
@@ -810,8 +826,20 @@ footer p { font-size: 0.78rem; color: var(--muted); }
     <h1 class="hero-headline fade-up fade-up-1">
       Product<br>
       <span class="line2">Manager</span>
+      
       <span class="hero-typed-line">
-        <span id="typed"></span><span class="cursor"></span>
+        
+        <span class="sizer-grid" aria-hidden="true">
+          <span>& Logistics.</span>
+          <span>& AI Products.</span>
+          <span>& Supply Chain.</span>
+          <span>& SaaS.</span>
+        </span>
+        
+        <span class="typing-layer">
+          <span id="typed"></span><span class="cursor"></span>
+        </span>
+        
       </span>
     </h1>
 
@@ -1194,7 +1222,7 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 </footer>
 
 <script>
-// Typed effect — fully natural flow with no unnatural width forcing
+// Typed effect
 const words = ['& Logistics.', '& AI Products.', '& Supply Chain.', '& SaaS.'];
 let wi = 0, ci = 0, deleting = false, paused = false;
 const el = document.getElementById('typed');
