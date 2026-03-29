@@ -134,6 +134,7 @@ nav {
   width: 6px; height: 6px;
   border-radius: 50%;
   background: var(--green);
+  flex-shrink: 0; /* Prevents dot from squishing */
   animation: pulse 2s infinite;
 }
 
@@ -148,6 +149,7 @@ nav {
   letter-spacing: -0.03em;
   margin-bottom: 2rem;
   font-weight: 800;
+  word-break: break-word; /* Prevents text overflow */
 }
 
 .hero-headline .line2 {
@@ -166,6 +168,7 @@ nav {
   color: var(--accent);
   min-height: 1.1em;
   will-change: contents;
+  max-width: 100%; /* Ensures it doesn't break out of container */
 }
 
 #typed {
@@ -552,7 +555,7 @@ nav {
 .skill-bubble:hover { transform: translateY(-3px) scale(1.04); border-color: transparent; }
 .skill-bubble:hover::before { opacity: 1; }
 
-/* Size variants — bigger = more important */
+/* Size variants */
 .sb-lg { font-size: 0.95rem; padding: 0.8rem 1.4rem; font-weight: 600; }
 .sb-sm { font-size: 0.72rem; padding: 0.45rem 0.9rem; }
 
@@ -610,8 +613,8 @@ nav {
 .ci-blue { background: rgba(163,196,232,0.1); color: var(--accent2); }
 .ci-purple { background: rgba(180,163,232,0.1); color: #b4a3e8; }
 
-.cert-info { flex: 1; }
-.cert-name { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.2rem; }
+.cert-info { flex: 1; min-width: 0; /* allows text truncation */ }
+.cert-name { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.2rem; white-space: normal; word-wrap: break-word;}
 .cert-issuer { font-size: 0.78rem; color: var(--muted); }
 
 .cert-badge {
@@ -621,6 +624,7 @@ nav {
   letter-spacing: 0.06em;
   padding: 0.3rem 0.75rem;
   border-radius: 100px;
+  flex-shrink: 0;
 }
 .badge-new { background: rgba(126,200,164,0.15); color: var(--green); }
 .badge-year { background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
@@ -649,7 +653,11 @@ nav {
 
 .contact-icon { font-size: 1.2rem; color: var(--muted); width: 20px; text-align: center; }
 .contact-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2rem; }
-.contact-value { font-size: 0.9rem; font-weight: 500; }
+.contact-value { 
+  font-size: 0.9rem; 
+  font-weight: 500; 
+  word-break: break-all; /* Fixed long email overflow issue */
+}
 
 /* ── Footer ── */
 footer {
@@ -682,7 +690,8 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   nav { padding: 1rem 1.25rem; }
   .nav-links { display: none; }
   .hero { padding: 7rem 1.25rem 3rem; }
-  .hero-headline { font-size: clamp(2.8rem, 12vw, 4.5rem); }
+  .hero-headline { font-size: clamp(2.8rem, 12vw, 4.5rem); word-break: break-word; }
+  .hero-badge { white-space: normal; line-height: 1.4; } /* Fixed badge overflow */
   .stats-bar { grid-template-columns: repeat(2, 1fr); }
   .stat { border-bottom: 1px solid var(--border); }
   .work-grid { grid-template-columns: 1fr; }
@@ -698,6 +707,10 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   .hero-actions a { justify-content: center; }
   .skill-bubble.sb-lg { font-size: 0.85rem; padding: 0.65rem 1.1rem; }
   .tl-item { padding-left: 1.75rem; }
+  
+  /* Fixed cert stacking on mobile */
+  .cert-row { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.25rem 0;}
+  .cert-badge { align-self: flex-start; }
 }
 
 /* ── Cursor blink ── */
@@ -767,8 +780,7 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 </head>
 <body>
 
-<!-- ── Nav ── -->
-<nav>
+<nav id="navbar">
   <a href="#" class="nav-logo">Arpit<span>.</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
@@ -791,7 +803,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   <a href="mailto:arpitshankar2@gmail.com" onclick="closeMenu()" style="color:var(--accent);margin-top:0.5rem;border-bottom:none;">Let's Talk &#8594;</a>
 </div>
 
-<!-- ── Hero ── -->
 <section id="home">
   <div class="hero">
     <div class="hero-badge fade-up">Available for New Opportunities</div>
@@ -837,7 +848,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   </div>
 </section>
 
-<!-- ── Marquee ── -->
 <div class="marquee-wrap">
   <div class="marquee-track">
     <span>Product Strategy</span><span class="dot">✦</span>
@@ -850,7 +860,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
     <span>Roadmapping</span><span class="dot">✦</span>
     <span>Six Sigma Green Belt</span><span class="dot">✦</span>
     <span>UAT & Release Mgmt</span><span class="dot">✦</span>
-    <!-- duplicate for seamless loop -->
     <span>Product Strategy</span><span class="dot">✦</span>
     <span>OMS · WMS · TMS</span><span class="dot">✦</span>
     <span>API Integrations</span><span class="dot">✦</span>
@@ -864,7 +873,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   </div>
 </div>
 
-<!-- ── About ── -->
 <section id="about">
   <div class="section">
     <div class="section-tag">About</div>
@@ -905,14 +913,12 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 
 <hr class="divider">
 
-<!-- ── Work ── -->
 <section id="work">
   <div class="section">
     <div class="section-tag">Selected Work</div>
     <h2 class="section-title">High-impact initiatives<br>in Logistics & SaaS</h2>
 
     <div class="work-grid">
-      <!-- Card 1 -->
       <div class="work-card">
         <div class="work-card-num">
           <span>01 / Fretron</span>
@@ -931,7 +937,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
         <i class="fas fa-network-wired work-card-icon"></i>
       </div>
 
-      <!-- Card 2 -->
       <div class="work-card">
         <div class="work-card-num">
           <span>02 / Fretron</span>
@@ -950,7 +955,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
         <i class="fas fa-wallet work-card-icon"></i>
       </div>
 
-      <!-- Card 3 -->
       <div class="work-card">
         <div class="work-card-num">
           <span>03 / Mantra Technologies</span>
@@ -969,7 +973,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
         <i class="fas fa-chart-line work-card-icon"></i>
       </div>
 
-      <!-- Card 4 -->
       <div class="work-card">
         <div class="work-card-num">
           <span>04 / Holisol Logistics</span>
@@ -993,7 +996,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 
 <hr class="divider">
 
-<!-- ── Experience ── -->
 <section id="experience">
   <div class="section">
     <div class="exp-grid">
@@ -1049,7 +1051,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 
 <hr class="divider">
 
-<!-- ── Skills ── -->
 <section id="skills">
   <div class="section">
     <div class="section-tag">Skills</div>
@@ -1114,7 +1115,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
       </div>
     </div>
 
-    <!-- Certs -->
     <div style="margin-top:3rem;">
       <div class="section-tag" style="margin-bottom:1rem;">Certifications</div>
       <div class="cert-row">
@@ -1155,7 +1155,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 
 <hr class="divider">
 
-<!-- ── Contact ── -->
 <section id="contact">
   <div class="section">
     <div class="section-tag">Contact</div>
@@ -1189,7 +1188,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   </div>
 </section>
 
-<!-- ── Footer ── -->
 <footer>
   <p>© 2026 Arpit Shankar</p>
   <p style="font-family:'Syne',sans-serif;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;">Product Manager · Gurugram, India</p>
@@ -1202,17 +1200,16 @@ let wi = 0, ci = 0, deleting = false, paused = false;
 const el = document.getElementById('typed');
 const typedLine = el.closest('.hero-typed-line') || el.parentElement;
 
-// Pre-measure the widest word and lock the container width
-// This is the key fix — width never changes, so no reflow
+// Fixed Width calculation: Append to `typedLine` instead of `body` to inherit the correct clamp font size.
 function lockWidth() {
   const tmp = document.createElement('span');
   tmp.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-family:Syne,sans-serif;font-weight:800;font-size:inherit;letter-spacing:-0.03em;';
-  document.body.appendChild(tmp);
+  typedLine.appendChild(tmp); 
   let maxW = 0;
   words.forEach(w => { tmp.textContent = w; maxW = Math.max(maxW, tmp.offsetWidth); });
-  document.body.removeChild(tmp);
-  // Set min-width on the typed line so layout never shifts
-  typedLine.style.minWidth = maxW + 'px';
+  typedLine.removeChild(tmp);
+  // Using max-width bounds so it doesn't push the viewport out on mobile
+  typedLine.style.minWidth = Math.min(maxW, window.innerWidth - 40) + 'px';
 }
 
 function type() {
@@ -1264,6 +1261,7 @@ document.querySelectorAll('.work-card, .tl-item, .skill-group, .cert-row, .conta
 // Nav shrink on scroll
 window.addEventListener('scroll', () => {
   const nav = document.getElementById('navbar');
+  // Add nav shrink logic here if desired
 });
 
 // Hamburger menu
