@@ -134,7 +134,7 @@ nav {
   width: 6px; height: 6px;
   border-radius: 50%;
   background: var(--green);
-  flex-shrink: 0; /* Prevents dot from squishing */
+  flex-shrink: 0;
   animation: pulse 2s infinite;
 }
 
@@ -149,7 +149,7 @@ nav {
   letter-spacing: -0.03em;
   margin-bottom: 2rem;
   font-weight: 800;
-  word-break: break-word; /* Prevents text overflow */
+  word-break: break-word;
 }
 
 .hero-headline .line2 {
@@ -168,7 +168,6 @@ nav {
   color: var(--accent);
   min-height: 1.1em;
   will-change: contents;
-  max-width: 100%; /* Ensures it doesn't break out of container */
 }
 
 #typed {
@@ -613,7 +612,7 @@ nav {
 .ci-blue { background: rgba(163,196,232,0.1); color: var(--accent2); }
 .ci-purple { background: rgba(180,163,232,0.1); color: #b4a3e8; }
 
-.cert-info { flex: 1; min-width: 0; /* allows text truncation */ }
+.cert-info { flex: 1; min-width: 0; }
 .cert-name { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.2rem; white-space: normal; word-wrap: break-word;}
 .cert-issuer { font-size: 0.78rem; color: var(--muted); }
 
@@ -656,7 +655,7 @@ nav {
 .contact-value { 
   font-size: 0.9rem; 
   font-weight: 500; 
-  word-break: break-all; /* Fixed long email overflow issue */
+  word-break: break-all;
 }
 
 /* ── Footer ── */
@@ -684,34 +683,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 .fade-up-3 { animation-delay: 0.35s; }
 .fade-up-4 { animation-delay: 0.5s; }
 .fade-up-5 { animation-delay: 0.65s; }
-
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  nav { padding: 1rem 1.25rem; }
-  .nav-links { display: none; }
-  .hero { padding: 7rem 1.25rem 3rem; }
-  .hero-headline { font-size: clamp(2.8rem, 12vw, 4.5rem); word-break: break-word; }
-  .hero-badge { white-space: normal; line-height: 1.4; } /* Fixed badge overflow */
-  .stats-bar { grid-template-columns: repeat(2, 1fr); }
-  .stat { border-bottom: 1px solid var(--border); }
-  .work-grid { grid-template-columns: 1fr; }
-  .skills-grid { grid-template-columns: 1fr; }
-  .contact-grid { grid-template-columns: 1fr; }
-  .section { padding: 4rem 1.25rem; }
-  footer { flex-direction: column; gap: 0.75rem; text-align: center; }
-  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .exp-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .nav-hamburger { display: flex; }
-  .nav-cta { display: none; }
-  .hero-actions { flex-direction: column; align-items: stretch; }
-  .hero-actions a { justify-content: center; }
-  .skill-bubble.sb-lg { font-size: 0.85rem; padding: 0.65rem 1.1rem; }
-  .tl-item { padding-left: 1.75rem; }
-  
-  /* Fixed cert stacking on mobile */
-  .cert-row { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.25rem 0;}
-  .cert-badge { align-self: flex-start; }
-}
 
 /* ── Cursor blink ── */
 .cursor {
@@ -753,6 +724,7 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   to   { transform: translateX(-50%); }
 }
 
+/* ── Base Desktop Grids (Moved up!) ── */
 .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
 .exp-grid { display:grid; grid-template-columns:1fr 2fr; gap:4rem; }
 
@@ -775,6 +747,34 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 }
 .mobile-menu a:last-child { border-bottom:none; }
 .mobile-menu a:hover { color:var(--text); }
+
+
+/* ── Mobile Queries (Must always be last!) ── */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.25rem; }
+  .nav-links { display: none; }
+  .hero { padding: 7rem 1.25rem 3rem; }
+  .hero-headline { font-size: clamp(2.8rem, 12vw, 4.5rem); word-break: break-word; }
+  .hero-badge { white-space: normal; line-height: 1.4; }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-bottom: 1px solid var(--border); }
+  .work-grid { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .section { padding: 4rem 1.25rem; }
+  footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .exp-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .nav-hamburger { display: flex; }
+  .nav-cta { display: none; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-actions a { justify-content: center; }
+  .skill-bubble.sb-lg { font-size: 0.85rem; padding: 0.65rem 1.1rem; }
+  .tl-item { padding-left: 1.75rem; }
+  
+  .cert-row { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.25rem 0;}
+  .cert-badge { align-self: flex-start; }
+}
 
 </style>
 </head>
@@ -1194,23 +1194,10 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 </footer>
 
 <script>
-// Typed effect — contained to prevent layout reflow
+// Typed effect — fully natural flow with no unnatural width forcing
 const words = ['& Logistics.', '& AI Products.', '& Supply Chain.', '& SaaS.'];
 let wi = 0, ci = 0, deleting = false, paused = false;
 const el = document.getElementById('typed');
-const typedLine = el.closest('.hero-typed-line') || el.parentElement;
-
-// Fixed Width calculation: Append to `typedLine` instead of `body` to inherit the correct clamp font size.
-function lockWidth() {
-  const tmp = document.createElement('span');
-  tmp.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-family:Syne,sans-serif;font-weight:800;font-size:inherit;letter-spacing:-0.03em;';
-  typedLine.appendChild(tmp); 
-  let maxW = 0;
-  words.forEach(w => { tmp.textContent = w; maxW = Math.max(maxW, tmp.offsetWidth); });
-  typedLine.removeChild(tmp);
-  // Using max-width bounds so it doesn't push the viewport out on mobile
-  typedLine.style.minWidth = Math.min(maxW, window.innerWidth - 40) + 'px';
-}
 
 function type() {
   if (paused) return;
@@ -1234,12 +1221,8 @@ function type() {
   setTimeout(type, deleting ? 35 : 65);
 }
 
-// Run after fonts are loaded to get accurate measurements
-if (document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(() => { lockWidth(); setTimeout(type, 800); });
-} else {
-  setTimeout(() => { lockWidth(); setTimeout(type, 800); }, 500);
-}
+// Start immediately on load instead of waiting for fonts
+setTimeout(type, 500);
 
 // Scroll reveal
 const observer = new IntersectionObserver((entries) => {
@@ -1261,7 +1244,6 @@ document.querySelectorAll('.work-card, .tl-item, .skill-group, .cert-row, .conta
 // Nav shrink on scroll
 window.addEventListener('scroll', () => {
   const nav = document.getElementById('navbar');
-  // Add nav shrink logic here if desired
 });
 
 // Hamburger menu
