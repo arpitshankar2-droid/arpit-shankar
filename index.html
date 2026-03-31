@@ -157,11 +157,6 @@ nav {
   -webkit-text-stroke: 1.5px rgba(240,237,232,0.35);
 }
 
-.hero-headline .accent-word {
-  color: var(--accent);
-  position: relative;
-}
-
 /* SIZER TRICK 2.0: The Grid Stack */
 .hero-typed-line {
   display: grid; 
@@ -169,7 +164,7 @@ nav {
 }
 
 .sizer-grid, .typing-layer {
-  grid-area: 1 / 1; /* Stacks both perfectly on top of each other */
+  grid-area: 1 / 1; 
 }
 
 .sizer-grid {
@@ -177,7 +172,7 @@ nav {
 }
 
 .sizer-grid span {
-  grid-area: 1 / 1; /* Stacks all invisible words together */
+  grid-area: 1 / 1; 
   visibility: hidden;
   pointer-events: none;
   user-select: none;
@@ -257,7 +252,6 @@ nav {
 }
 .stat-num.accent { color: var(--accent); }
 .stat-num.green { color: var(--green); }
-.stat-num.blue { color: var(--accent2); }
 
 .stat-label {
   font-size: 0.7rem;
@@ -305,21 +299,28 @@ nav {
 .work-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
+  gap: 1.5rem;
 }
 
 .work-card {
-  background: var(--bg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
   padding: 2.5rem;
   position: relative;
   overflow: hidden;
-  transition: background 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  transform-style: preserve-3d;
 }
-.work-card:hover { background: #0f0f0f; }
+.work-card:hover { 
+  border-color: rgba(255,255,255,0.15); 
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* 3D Inner elements */
+.work-card-content {
+  transform: translateZ(30px);
+}
 
 .work-card-num {
   font-family: 'Syne', sans-serif;
@@ -386,9 +387,8 @@ nav {
   right: -1rem;
   font-size: 7rem;
   opacity: 0.03;
-  transition: opacity 0.3s, transform 0.4s;
+  transform: translateZ(10px);
 }
-.work-card:hover .work-card-icon { opacity: 0.06; transform: scale(1.05) rotate(-3deg); }
 
 /* ── Timeline ── */
 .timeline { position: relative; }
@@ -465,45 +465,7 @@ nav {
   color: var(--muted);
 }
 
-/* ── Skills ── */
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-.skill-group {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.5rem;
-}
-
-.skill-group-title {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  margin-bottom: 1.25rem;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-.skill-group-title i { font-size: 0.75rem; }
-
-.skill-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.skill-pill {
-  font-size: 0.78rem;
-  padding: 0.4rem 0.9rem;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  color: var(--text);
-  font-weight: 400;
-  transition: all 0.2s;
-}
-.skill-pill:hover { border-color: var(--accent); color: var(--accent); }
-
-/* ── Creative skill orbit ── */
+/* ── Skills & Universe ── */
 .skill-universe {
   position: relative;
   width: 100%;
@@ -568,11 +530,9 @@ nav {
 .skill-bubble:hover { transform: translateY(-3px) scale(1.04); border-color: transparent; }
 .skill-bubble:hover::before { opacity: 1; }
 
-/* Size variants */
 .sb-lg { font-size: 0.95rem; padding: 0.8rem 1.4rem; font-weight: 600; }
 .sb-sm { font-size: 0.72rem; padding: 0.45rem 0.9rem; }
 
-/* Color variants */
 .sb-gold { border-color: rgba(232,213,163,0.2); }
 .sb-gold::before { background: rgba(232,213,163,0.08); }
 .sb-gold:hover { color: var(--accent); box-shadow: 0 8px 24px rgba(232,213,163,0.12); }
@@ -646,7 +606,7 @@ nav {
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .contact-card {
@@ -660,17 +620,14 @@ nav {
   text-decoration: none;
   color: var(--text);
   transition: all 0.25s;
+  transform-style: preserve-3d;
 }
-.contact-card:hover { border-color: var(--accent); background: rgba(232,213,163,0.03); }
-.contact-card:hover .contact-icon { color: var(--accent); }
+.contact-card:hover { border-color: var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.contact-card:hover .contact-icon { color: var(--accent); transform: translateZ(20px); }
 
-.contact-icon { font-size: 1.2rem; color: var(--muted); width: 20px; text-align: center; }
-.contact-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2rem; }
-.contact-value { 
-  font-size: 0.9rem; 
-  font-weight: 500; 
-  word-break: break-all;
-}
+.contact-icon { font-size: 1.2rem; color: var(--muted); width: 20px; text-align: center; transition: 0.3s; }
+.contact-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2rem; transform: translateZ(10px);}
+.contact-value { font-size: 0.9rem; font-weight: 500; word-break: break-all; transform: translateZ(10px);}
 
 /* ── Footer ── */
 footer {
@@ -698,7 +655,6 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 .fade-up-4 { animation-delay: 0.5s; }
 .fade-up-5 { animation-delay: 0.65s; }
 
-/* ── Cursor blink ── */
 .cursor {
   display: inline-block;
   width: 3px;
@@ -739,8 +695,9 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 }
 
 /* ── Base Desktop Grids ── */
-.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+.about-grid { display:grid; grid-template-columns:1fr 1.2fr 1fr; gap:3rem; align-items:start; }
 .exp-grid { display:grid; grid-template-columns:1fr 2fr; gap:4rem; }
+.about-image { width: 100%; border-radius: 16px; object-fit: cover; aspect-ratio: 4/5; border: 1px solid var(--border); transform-style: preserve-3d; }
 
 .nav-hamburger {
   display:none; flex-direction:column; gap:5px; cursor:pointer;
@@ -762,8 +719,10 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 .mobile-menu a:last-child { border-bottom:none; }
 .mobile-menu a:hover { color:var(--text); }
 
-
 /* ── Mobile Queries ── */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
 @media (max-width: 768px) {
   nav { padding: 1rem 1.25rem; }
   .nav-links { display: none; }
@@ -775,11 +734,9 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   .stats-bar { grid-template-columns: repeat(2, 1fr); }
   .stat { border-bottom: 1px solid var(--border); }
   .work-grid { grid-template-columns: 1fr; }
-  .skills-grid { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .section { padding: 4rem 1.25rem; }
   footer { flex-direction: column; gap: 0.75rem; text-align: center; }
-  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
   .exp-grid { grid-template-columns: 1fr; gap: 2rem; }
   .nav-hamburger { display: flex; }
   .nav-cta { display: none; }
@@ -802,6 +759,7 @@ footer p { font-size: 0.78rem; color: var(--muted); }
     <li><a href="#about">About</a></li>
     <li><a href="#work">Work</a></li>
     <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -814,6 +772,7 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   <a href="#about" onclick="closeMenu()">About</a>
   <a href="#work" onclick="closeMenu()">Work</a>
   <a href="#experience" onclick="closeMenu()">Experience</a>
+  <a href="#education" onclick="closeMenu()">Education</a>
   <a href="#skills" onclick="closeMenu()">Skills</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
   <a href="mailto:arpitshankar2@gmail.com" onclick="closeMenu()" style="color:var(--accent);margin-top:0.5rem;border-bottom:none;">Let's Talk &#8594;</a>
@@ -831,7 +790,7 @@ footer p { font-size: 0.78rem; color: var(--muted); }
         
         <span class="sizer-grid" aria-hidden="true">
           <span>& Logistics.</span>
-          <span>& AI Products.</span>
+          <span>& Enterprise Tech.</span>
           <span>& Supply Chain.</span>
           <span>& SaaS.</span>
         </span>
@@ -852,7 +811,7 @@ footer p { font-size: 0.78rem; color: var(--muted); }
     <div class="hero-actions fade-up fade-up-3">
       <a href="#work" class="btn-primary">View Work <i class="fas fa-arrow-right" style="font-size:0.75rem"></i></a>
       <a href="https://www.linkedin.com/in/er-arpit-shankar" target="_blank" class="btn-ghost"><i class="fab fa-linkedin" style="font-size:0.85rem"></i> LinkedIn</a>
-      <a href="mailto:arpitshankar2@gmail.com" class="btn-ghost"><i class="fas fa-envelope" style="font-size:0.8rem"></i> Email</a>
+      <a href="https://github.com/arpitshankar2-droid/arpit-shankar" target="_blank" class="btn-ghost"><i class="fab fa-github" style="font-size:0.85rem"></i> GitHub</a>
     </div>
 
     <div class="stats-bar fade-up fade-up-4">
@@ -905,6 +864,10 @@ footer p { font-size: 0.78rem; color: var(--muted); }
   <div class="section">
     <div class="section-tag">About</div>
     <div class="about-grid">
+      <div data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+        <img src="profile.jpeg" alt="Arpit Shankar" class="about-image">
+      </div>
+
       <div>
         <h2 class="section-title" style="margin-bottom:1.5rem;">I build products that<br><em style="font-style:italic;color:var(--accent)">actually ship.</em></h2>
         <p style="font-size:0.95rem;color:var(--muted);line-height:1.85;font-weight:300;margin-bottom:1.25rem;">
@@ -915,24 +878,24 @@ footer p { font-size: 0.78rem; color: var(--muted); }
         </p>
       </div>
       <div style="display:flex;flex-direction:column;gap:1rem;">
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;">
-          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.85rem;">Currently focused on</div>
-          <div style="display:flex;flex-direction:column;gap:0.6rem;">
+        <div data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.1" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem; transform-style: preserve-3d;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.85rem; transform: translateZ(20px);">Currently focused on</div>
+          <div style="display:flex;flex-direction:column;gap:0.6rem; transform: translateZ(20px);">
             <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;">
               <span style="color:var(--green);font-size:0.7rem;">▶</span> ONDC B2B protocol integrations
             </div>
             <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;">
-              <span style="color:var(--green);font-size:0.7rem;">▶</span> AI-powered logistics products
+              <span style="color:var(--green);font-size:0.7rem;">▶</span> Data-driven logistics products
             </div>
             <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;">
               <span style="color:var(--green);font-size:0.7rem;">▶</span> Senior PM / Product Owner roles
             </div>
           </div>
         </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;">
-          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.85rem;">Location & availability</div>
-          <div style="font-size:0.875rem;margin-bottom:0.4rem;"><i class="fas fa-map-marker-alt" style="color:var(--muted);width:16px;margin-right:0.4rem;font-size:0.75rem;"></i>Gurugram, India</div>
-          <div style="font-size:0.875rem;"><i class="fas fa-clock" style="color:var(--muted);width:16px;margin-right:0.4rem;font-size:0.75rem;"></i>Open to hybrid & remote</div>
+        <div data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.1" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem; transform-style: preserve-3d;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.85rem; transform: translateZ(20px);">Location & availability</div>
+          <div style="font-size:0.875rem;margin-bottom:0.4rem; transform: translateZ(20px);"><i class="fas fa-globe" style="color:var(--muted);width:16px;margin-right:0.4rem;font-size:0.75rem;"></i>Global / Remote</div>
+          <div style="font-size:0.875rem; transform: translateZ(20px);"><i class="fas fa-plane-departure" style="color:var(--muted);width:16px;margin-right:0.4rem;font-size:0.75rem;"></i>Available to work anywhere in the world</div>
         </div>
       </div>
     </div>
@@ -947,76 +910,84 @@ footer p { font-size: 0.78rem; color: var(--muted); }
     <h2 class="section-title">High-impact initiatives<br>in Logistics & SaaS</h2>
 
     <div class="work-grid">
-      <div class="work-card">
-        <div class="work-card-num">
-          <span>01 / Fretron</span>
-          <span class="work-chip chip-blue">API Strategy</span>
+      <div class="work-card" data-tilt data-tilt-max="7" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+        <div class="work-card-content">
+          <div class="work-card-num">
+            <span>01 / Fretron</span>
+            <span class="work-chip chip-blue">API Strategy</span>
+          </div>
+          <h3>ONDC Protocol Integration</h3>
+          <p>Led the full product roadmap for Open Network for Digital Commerce B2B protocols (LBNP/LSNP). Delivered API integrations connecting freight buyers and suppliers at scale.</p>
+          <div class="work-metric" style="color:var(--accent2)">
+            <i class="fas fa-arrow-trend-up" style="font-size:0.7rem"></i> 25% fleet supply increase
+          </div>
+          <div class="work-tags">
+            <span class="work-tag">Product Roadmap</span>
+            <span class="work-tag">B2B Protocols</span>
+            <span class="work-tag">API Design</span>
+          </div>
+          <i class="fas fa-network-wired work-card-icon"></i>
         </div>
-        <h3>ONDC Protocol Integration</h3>
-        <p>Led the full product roadmap for Open Network for Digital Commerce B2B protocols (LBNP/LSNP). Delivered API integrations connecting freight buyers and suppliers at scale.</p>
-        <div class="work-metric" style="color:var(--accent2)">
-          <i class="fas fa-arrow-trend-up" style="font-size:0.7rem"></i> 25% fleet supply increase
-        </div>
-        <div class="work-tags">
-          <span class="work-tag">Product Roadmap</span>
-          <span class="work-tag">B2B Protocols</span>
-          <span class="work-tag">API Design</span>
-        </div>
-        <i class="fas fa-network-wired work-card-icon"></i>
       </div>
 
-      <div class="work-card">
-        <div class="work-card-num">
-          <span>02 / Fretron</span>
-          <span class="work-chip chip-gold">Fintech</span>
+      <div class="work-card" data-tilt data-tilt-max="7" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+         <div class="work-card-content">
+          <div class="work-card-num">
+            <span>02 / Fretron</span>
+            <span class="work-chip chip-gold">Fintech</span>
+          </div>
+          <h3>TMS 2.0 — Unnati</h3>
+          <p>Replaced legacy SAP dependency with a custom financial lifecycle module. Automated end-to-end RFQ-to-Settlement workflows for enterprise 3PL clients.</p>
+          <div class="work-metric" style="color:var(--accent)">
+            <i class="fas fa-arrow-trend-up" style="font-size:0.7rem"></i> ₹40L+ annual savings
+          </div>
+          <div class="work-tags">
+            <span class="work-tag">SAP Migration</span>
+            <span class="work-tag">Settlement Automation</span>
+            <span class="work-tag">ERP</span>
+          </div>
+          <i class="fas fa-wallet work-card-icon"></i>
         </div>
-        <h3>TMS 2.0 — Unnati</h3>
-        <p>Replaced legacy SAP dependency with a custom financial lifecycle module. Automated end-to-end RFQ-to-Settlement workflows for enterprise 3PL clients.</p>
-        <div class="work-metric" style="color:var(--accent)">
-          <i class="fas fa-arrow-trend-up" style="font-size:0.7rem"></i> ₹40L+ annual savings
-        </div>
-        <div class="work-tags">
-          <span class="work-tag">SAP Migration</span>
-          <span class="work-tag">Settlement Automation</span>
-          <span class="work-tag">ERP</span>
-        </div>
-        <i class="fas fa-wallet work-card-icon"></i>
       </div>
 
-      <div class="work-card">
-        <div class="work-card-num">
-          <span>03 / Mantra Technologies</span>
-          <span class="work-chip chip-green">SaaS</span>
+      <div class="work-card" data-tilt data-tilt-max="7" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+        <div class="work-card-content">
+          <div class="work-card-num">
+            <span>03 / Mantra Technologies</span>
+            <span class="work-chip chip-green">SaaS</span>
+          </div>
+          <h3>B2B SaaS Scale-Up</h3>
+          <p>Owned full product lifecycle for VoxDesk & OutreachWriter from 0 to 5,000+ early users. Defined vision, PRDs, user stories, UAT, and release management end-to-end.</p>
+          <div class="work-metric" style="color:var(--green)">
+            <i class="fas fa-arrow-trend-up" style="font-size:0.7rem"></i> 30% dev rework reduction
+          </div>
+          <div class="work-tags">
+            <span class="work-tag">0→1 Product</span>
+            <span class="work-tag">User Research</span>
+            <span class="work-tag">GTM</span>
+          </div>
+          <i class="fas fa-chart-line work-card-icon"></i>
         </div>
-        <h3>B2B SaaS Scale-Up</h3>
-        <p>Owned full product lifecycle for VoxDesk & OutreachWriter from 0 to 5,000+ early users. Defined vision, PRDs, user stories, UAT, and release management end-to-end.</p>
-        <div class="work-metric" style="color:var(--green)">
-          <i class="fas fa-arrow-trend-up" style="font-size:0.7rem"></i> 30% dev rework reduction
-        </div>
-        <div class="work-tags">
-          <span class="work-tag">0→1 Product</span>
-          <span class="work-tag">User Research</span>
-          <span class="work-tag">GTM</span>
-        </div>
-        <i class="fas fa-chart-line work-card-icon"></i>
       </div>
 
-      <div class="work-card">
-        <div class="work-card-num">
-          <span>04 / Holisol Logistics</span>
-          <span class="work-chip chip-orange">Analytics</span>
+      <div class="work-card" data-tilt data-tilt-max="7" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+        <div class="work-card-content">
+          <div class="work-card-num">
+            <span>04 / Holisol Logistics</span>
+            <span class="work-chip chip-orange">Analytics</span>
+          </div>
+          <h3>EXIM Auction Logic</h3>
+          <p>Applied product analytics to design consolidated auction logic for Export-Import containers. Optimised freight costs, fill-rates, and broker placement visibility.</p>
+          <div class="work-metric" style="color:#e89664">
+            <i class="fas fa-arrow-trend-up" style="font-size:0.7rem"></i> 18% operational throughput lift
+          </div>
+          <div class="work-tags">
+            <span class="work-tag">Data Analytics</span>
+            <span class="work-tag">WMS/TMS</span>
+            <span class="work-tag">Optimization</span>
+          </div>
+          <i class="fas fa-ship work-card-icon"></i>
         </div>
-        <h3>EXIM Auction Logic</h3>
-        <p>Applied product analytics to design consolidated auction logic for Export-Import containers. Optimised freight costs, fill-rates, and broker placement visibility.</p>
-        <div class="work-metric" style="color:#e89664">
-          <i class="fas fa-arrow-trend-up" style="font-size:0.7rem"></i> 18% operational throughput lift
-        </div>
-        <div class="work-tags">
-          <span class="work-tag">Data Analytics</span>
-          <span class="work-tag">WMS/TMS</span>
-          <span class="work-tag">Optimization</span>
-        </div>
-        <i class="fas fa-ship work-card-icon"></i>
       </div>
     </div>
   </div>
@@ -1071,6 +1042,35 @@ footer p { font-size: 0.78rem; color: var(--muted); }
             <span class="tl-pill">Shopify Integration</span>
             <span class="tl-pill">Process Mapping</span>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="education">
+  <div class="section">
+    <div class="exp-grid">
+      <div>
+        <div class="section-tag">Education</div>
+        <h2 class="section-title" style="font-size:2rem;">Academic<br>Background</h2>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot active"></div>
+          <div class="tl-date">2022 — 2024</div>
+          <div class="tl-role">MBA, Data Science</div>
+          <div class="tl-company">Manipal University · Jaipur</div>
+          <div class="tl-desc">Graduated with a CGPA of 8.2. Focused on leveraging data modeling and analytics for business strategy and product optimization.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">2016 — 2020</div>
+          <div class="tl-role">B.Tech, Mechanical Engineering</div>
+          <div class="tl-company">UPES · Dehradun</div>
+          <div class="tl-desc">Graduated with a CGPA of 8.02. Developed foundational engineering problem-solving and systems thinking skills.</div>
         </div>
       </div>
     </div>
@@ -1190,14 +1190,14 @@ footer p { font-size: 0.78rem; color: var(--muted); }
     <p style="font-size:0.95rem;color:var(--muted);margin-bottom:2.5rem;max-width:400px;line-height:1.7;font-weight:300;">Open to Senior PM and Product Owner roles. Happy to chat about product, logistics, or a good problem to solve.</p>
 
     <div class="contact-grid">
-      <a href="mailto:arpitshankar2@gmail.com" class="contact-card">
+      <a href="mailto:arpitshankar2@gmail.com" class="contact-card" data-tilt data-tilt-max="10" data-tilt-glare="true" data-tilt-max-glare="0.2">
         <span class="contact-icon"><i class="fas fa-envelope"></i></span>
         <div>
           <div class="contact-label">Email</div>
           <div class="contact-value">arpitshankar2@gmail.com</div>
         </div>
       </a>
-      <a href="https://www.linkedin.com/in/er-arpit-shankar" target="_blank" class="contact-card">
+      <a href="https://www.linkedin.com/in/er-arpit-shankar" target="_blank" class="contact-card" data-tilt data-tilt-max="10" data-tilt-glare="true" data-tilt-max-glare="0.2">
         <span class="contact-icon"><i class="fab fa-linkedin"></i></span>
         <div>
           <div class="contact-label">LinkedIn</div>
@@ -1205,11 +1205,19 @@ footer p { font-size: 0.78rem; color: var(--muted); }
         </div>
       </a>
 
-      <a href="https://arpitshankar2-droid.github.io/arpit-shankar/" target="_blank" class="contact-card">
+      <a href="https://arpitshankar2-droid.github.io/arpit-shankar/" target="_blank" class="contact-card" data-tilt data-tilt-max="10" data-tilt-glare="true" data-tilt-max-glare="0.2">
         <span class="contact-icon"><i class="fas fa-globe"></i></span>
         <div>
           <div class="contact-label">Portfolio</div>
           <div class="contact-value">arpit-shankar.github.io</div>
+        </div>
+      </a>
+      
+      <a href="https://github.com/arpitshankar2-droid/arpit-shankar" target="_blank" class="contact-card" data-tilt data-tilt-max="10" data-tilt-glare="true" data-tilt-max-glare="0.2">
+        <span class="contact-icon"><i class="fab fa-github"></i></span>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-value">arpitshankar2-droid</div>
         </div>
       </a>
     </div>
@@ -1218,12 +1226,14 @@ footer p { font-size: 0.78rem; color: var(--muted); }
 
 <footer>
   <p>© 2026 Arpit Shankar</p>
-  <p style="font-family:'Syne',sans-serif;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;">Product Manager · Gurugram, India</p>
+  <p style="font-family:'Syne',sans-serif;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;">Product Manager · Available Worldwide</p>
 </footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 
 <script>
 // Typed effect
-const words = ['& Logistics.', '& AI Products.', '& Supply Chain.', '& SaaS.'];
+const words = ['& Logistics.', '& Enterprise Tech.', '& Supply Chain.', '& SaaS.'];
 let wi = 0, ci = 0, deleting = false, paused = false;
 const el = document.getElementById('typed');
 
@@ -1267,11 +1277,6 @@ document.querySelectorAll('.work-card, .tl-item, .skill-group, .cert-row, .conta
   el.style.transform = 'translateY(20px)';
   el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(el);
-});
-
-// Nav shrink on scroll
-window.addEventListener('scroll', () => {
-  const nav = document.getElementById('navbar');
 });
 
 // Hamburger menu
